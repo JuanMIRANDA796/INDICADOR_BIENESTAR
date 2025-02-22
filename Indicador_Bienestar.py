@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import sqlite3
+import matplotlib.pyplot as plt
 import requests
 
 # URL del archivo de base de datos SQLite en GitHub
@@ -26,11 +27,11 @@ if db_file:
 
     # Obtener nombres de las tablas
     tables = pd.read_sql("SELECT name FROM sqlite_master WHERE type='table'", conn)
-    st.write("### 📌 Tablas disponibles en la base de datos:")
-    st.write(tables)
+    st.sidebar.write("### 📌 Tablas disponibles en la base de datos:")
+    st.sidebar.write(tables)
 
     # Selección de tabla para visualizar
-    table_name = st.selectbox("Selecciona una tabla para ver los datos:", tables["name"])
+    table_name = st.sidebar.selectbox("Selecciona una tabla para ver los datos:", tables["name"])
 
     if table_name:
         # Cargar los datos en un DataFrame
@@ -38,30 +39,26 @@ if db_file:
         st.write(f"### 📊 Datos de la tabla `{table_name}`")
         st.dataframe(df)
 
+        # Crear el gráfico de líneas
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.plot(df['año'], df['Variacion_Porcentual_IPC'], marker='o', label='Variación Porcentual IPC')
+        ax.plot(df['año'], df['variacion porcentual anual'], marker='s', label='Variación Porcentual Anual')
+        ax.plot(df['año'], df['Tasa de Crecimiento Anual KW/h'], marker='x', label='Tasa de Crecimiento Anual KW/h')
+        ax.plot(df['año'], df['indicador_bienestar'], marker='^', label='Indicador de Bienestar')  # Plot indicador_bienestar
+
+        ax.set_xlabel('Año')
+        ax.set_ylabel('Porcentaje / Tasa / Indicador')  # Updated y-axis label
+        ax.set_title('Comparación de Variables a lo Largo del Tiempo')
+        ax.legend()
+        ax.grid(True)
+        ax.set_xticks(df['año'])
+
+        # Mostrar el gráfico en Streamlit
+        st.pyplot(fig)
+
         # Opción para descargar los datos en CSV
         csv = df.to_csv(index=False).encode("utf-8")
         st.download_button("📥 Descargar CSV", csv, "datos.csv", "text/csv")
 
-    import matplotlib.pyplot as plt
-
-# Assuming 'df' is your DataFrame with the required columns
-# and it has already been processed as shown in the previous code.
-
-plt.figure(figsize=(10, 6))
-plt.plot(df['año'], df['Variacion_Porcentual_IPC'], marker='o', label='Variación Porcentual IPC')
-plt.plot(df['año'], df['variacion porcentual anual'], marker='s', label='Variación Porcentual Anual')
-plt.plot(df['año'], df['Tasa de Crecimiento Anual KW/h'], marker='x', label='Tasa de Crecimiento Anual KW/h')
-plt.plot(df['año'], df['indicador_bienestar'], marker='^', label='Indicador de Bienestar') # Plot indicador_bienestar
-
-plt.xlabel('Año')
-plt.ylabel('Porcentaje / Tasa / Indicador')  # Updated y-axis label
-plt.title('Comparación de Variables a lo Largo del Tiempo')
-plt.legend()
-plt.grid(True)
-plt.xticks(df['año'])
-plt.show()
-
-
     # Cerrar la conexión
     conn.close()
-    
