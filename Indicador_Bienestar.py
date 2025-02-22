@@ -42,5 +42,26 @@ if db_file:
         csv = df.to_csv(index=False).encode("utf-8")
         st.download_button("📥 Descargar CSV", csv, "datos.csv", "text/csv")
 
+    import matplotlib.pyplot as plt
+
+# Assuming 'df' is your DataFrame with the required columns
+# and it has already been processed as shown in the previous code.
+
+plt.figure(figsize=(10, 6))
+plt.plot(df['año'], df['Variacion_Porcentual_IPC'], marker='o', label='Variación Porcentual IPC')
+plt.plot(df['año'], df['variacion porcentual anual'], marker='s', label='Variación Porcentual Anual')
+plt.plot(df['año'], df['Tasa de Crecimiento Anual KW/h'], marker='x', label='Tasa de Crecimiento Anual KW/h')
+plt.plot(df['año'], df['indicador_bienestar'], marker='^', label='Indicador de Bienestar') # Plot indicador_bienestar
+
+plt.xlabel('Año')
+plt.ylabel('Porcentaje / Tasa / Indicador')  # Updated y-axis label
+plt.title('Comparación de Variables a lo Largo del Tiempo')
+plt.legend()
+plt.grid(True)
+plt.xticks(df['año'])
+plt.show()
+
+
     # Cerrar la conexión
     conn.close()
+    
