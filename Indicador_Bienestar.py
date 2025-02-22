@@ -4,8 +4,6 @@ import sqlite3
 import matplotlib.pyplot as plt
 import requests
 
-
-
 # URL del archivo de base de datos SQLite en GitHub
 GITHUB_DB_URL = "https://raw.githubusercontent.com/JuanMIRANDA796/INDICADOR_BIENESTAR/main/mi_base_de_datos.db"
 
