@@ -3,7 +3,7 @@ import pandas as pd
 import sqlite3
 import matplotlib.pyplot as plt
 import requests
-pip install matplotlib
+
 
 
 # URL del archivo de base de datos SQLite en GitHub
