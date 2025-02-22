@@ -32,8 +32,14 @@ if sql_file:
     except UnicodeDecodeError:
         st.error("⚠️ Error al decodificar el archivo SQL. Asegúrate de que esté en formato UTF-8.")
     else:
-        # Ejecutar las sentencias SQL
-        cursor.executescript(sql_script)
+        # Depurar y ejecutar cada sentencia SQL individualmente
+        for statement in sql_script.split(';'):
+            try:
+                cursor.execute(statement)
+            except sqlite3.Error as e:
+                st.error(f"⚠️ Error al ejecutar la sentencia SQL: {e}")
+                st.error(f"Sentencia SQL con error: {statement}")
+                break
         conn.commit()
 
         # Obtener nombres de las tablas
