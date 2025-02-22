@@ -16,7 +16,7 @@ conn = sqlite3.connect('mi_base_de_datos.db')
 cursor = conn.cursor()
 
 # Ejecutar el script SQL para crear la base de datos y las tablas
-with open('mi_base_de_datos.sql', 'r') as sql_file:
+with open('mi_base_de_datos.sql', 'r', encoding='utf-8') as sql_file:
     sql_script = sql_file.read()
 cursor.executescript(sql_script)
 conn.commit()
@@ -29,3 +29,4 @@ st.write(df)
 
 # Cerrar la conexión
 conn.close()
+
