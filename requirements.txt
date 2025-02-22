@@ -1,5 +1,6 @@
 streamlit
 pandas
-sqlite3
-matplotlib
+numpy
+plotly
+sqlalchemy
 requests
