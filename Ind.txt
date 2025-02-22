@@ -1,9 +1,0 @@
-sqlite3
-matplotlib
-requests
-streamlit
-pandas
-numpy
-plotly
-sqlalchemy
-requests
